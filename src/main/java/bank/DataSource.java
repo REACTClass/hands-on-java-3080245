@@ -64,11 +64,29 @@ public class DataSource {
     return account;
   }
 
-  public static void main(String[] args) {
-  Customer customer = getCustomer("twest8o@friendfeed.com");
-  System.out.println(customer.getName());
 
-  Account account = getAccount(customer.getAccountId());
-  System.out.println(account.getBalance());
+  public static void updateAccountBalance(int accountId, double balance) {
+    String sql = "UPDATE accounts SET balance = ? where id = ?";
+    try(
+      Connection connection = connect();
+      PreparedStatement statement = connection.prepareStatement(sql);
+    ) {
+      statement.setDouble(1, balance);
+      statement.setInt(2, accountId);
+
+      //For insert, update or delete statements, we use the executeUpdate()
+      statement.executeUpdate();
+
+    }catch(SQLException e) {
+        e.printStackTrace();
+      }
+    
   }
+//   public static void main(String[] args) {
+//   Customer customer = getCustomer("twest8o@friendfeed.com");
+//   System.out.println(customer.getName());
+
+//   Account account = getAccount(customer.getAccountId());
+//   System.out.println(account.getBalance());
+//   }
 }
